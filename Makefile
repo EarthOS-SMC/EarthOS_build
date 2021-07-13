@@ -1,6 +1,15 @@
 outdir = ${OUT}
 # Final target - media code
-#media: out/rootfs.img
+bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
+	rm -rf $(outdir)/tmp
+	cp -r build/fssc-builder $(outdir)/tmp
+	rm $(outdir)/tmp/project.conf $(outdir)/tmp/config/*
+	cp config/project.conf $(outdir)/tmp/
+	cp config/attributes* $(outdir)/tmp/config
+	cp $(outdir)/parts/mbr  $(outdir)/tmp/
+	cd $(outdir)/tmp && ./build.sh
+	mv $(outdir)/tmp/output.fssc $(outdir)/EarthOS.fssc
+	rm -rf $(outdir)/tmp
 # Root fs files
 rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	rm -rf $(outdir)/root
