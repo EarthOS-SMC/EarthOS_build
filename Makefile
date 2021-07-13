@@ -1,6 +1,9 @@
 outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
+# Init system
+init: pwuc $(outdir)/parts
+	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
 # Boot fs files
 bootfs: $(outdir)/parts lbl kernel
 	mkdir -p $(outdir)/boot
@@ -22,6 +25,10 @@ $(outdir)/parts:
 # Build tools
 build_tools: build/tools/makembr.c
 	gcc build/tools/makembr.c -o build/bin/makembr
+# PowerSlash userspace compiler
+pwuc: build/pwuc/pwc.c
+	mkdir -p build/bin
+	gcc build/pwuc/pwc.c -o build/bin/pwuc
 # PowerSlash compiler
 pwc: build/pwc/pwc.c
 	mkdir -p build/bin
