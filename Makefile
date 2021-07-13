@@ -1,6 +1,11 @@
 outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
+# Boot fs files
+bootfs: $(outdir)/parts lbl kernel
+	mkdir -p $(outdir)/boot
+	cp $(outdir)/parts/lbl $(outdir)/boot/boot.smc
+	cp $(outdir)/parts/kernel $(outdir)/boot/ekrnl
 # Kernel
 kernel: pwc $(outdir)/parts kernel/main.pwsl
 	cd kernel && pwc main.pwsl -o $(outdir)/parts/kernel --include-dir .
