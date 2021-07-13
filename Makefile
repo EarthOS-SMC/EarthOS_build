@@ -2,7 +2,7 @@ outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
 # Root fs files
-rootfs_files: installer/rootfs init usrsetup shell ui coreutils
+rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	rm -rf $(outdir)/root
 	cp -r installer/rootfs $(outdir)/root
 	rm -rf $(outdir)/root/.git*
@@ -13,6 +13,9 @@ rootfs_files: installer/rootfs init usrsetup shell ui coreutils
 	cp $(outdir)/parts/shell $(outdir)/root/bin/
 	cp $(outdir)/parts/ui $(outdir)/root/lib/system/
 	cp $(outdir)/parts/coreutils/* $(outdir)/root/bin/
+# Build info
+build_info: $(outdir)/root installer/rootfs
+	./build/buildsetup.sh
 # Core utils
 coreutils: pwuc $(outdir)/parts
 	mkdir -p $(outdir)/parts/coreutils
