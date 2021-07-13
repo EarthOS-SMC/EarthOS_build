@@ -9,7 +9,7 @@ rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	find $(outdir)/root -name .gitignore | xargs rm -f
 	mkdir -p $(outdir)/root/sbin
 	mkdir -p $(outdir)/root/bin
-	mkdir -p $(outdir)/root/lib
+	mkdir -p $(outdir)/root/lib/system/users
 	cp $(outdir)/parts/init $(outdir)/root/sbin/
 	cp $(outdir)/parts/usrsetup $(outdir)/root/lib/system/
 	cp $(outdir)/parts/initcfg $(outdir)/root/lib/system/
