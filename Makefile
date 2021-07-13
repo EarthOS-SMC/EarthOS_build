@@ -10,6 +10,10 @@ rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	mkdir -p $(outdir)/root/sbin
 	mkdir -p $(outdir)/root/bin
 	mkdir -p $(outdir)/root/lib/system/users
+	mkdir -p $(outdir)/root/boot
+	mkdir -p $(outdir)/root/dev
+	mkdir -p $(outdir)/root/proc
+	mkdir -p $(outdir)/root/sys
 	cp $(outdir)/parts/init $(outdir)/root/sbin/
 	cp $(outdir)/parts/usrsetup $(outdir)/root/lib/system/
 	cp $(outdir)/parts/initcfg $(outdir)/root/lib/system/
