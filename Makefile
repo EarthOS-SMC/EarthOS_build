@@ -17,7 +17,7 @@ rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	cp $(outdir)/parts/ui $(outdir)/root/lib/system/
 	cp $(outdir)/parts/coreutils/* $(outdir)/root/bin/
 # Build info
-build_info: $(outdir)/root installer/rootfs
+build_info: installer/rootfs
 	./build/buildsetup.sh
 # Core utils
 coreutils: pwuc $(outdir)/parts
