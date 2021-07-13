@@ -1,6 +1,18 @@
 outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
+# Root fs files
+rootfs_files: installer/rootfs init usrsetup shell ui coreutils
+	rm -rf $(outdir)/root
+	cp -r installer/rootfs $(outdir)/root
+	rm -rf $(outdir)/root/.git*
+	find $(outdir)/root -name .gitignore | xargs rm -f
+	cp $(outdir)/parts/init $(outdir)/root/sbin/
+	cp $(outdir)/parts/usrsetup $(outdir)/root/lib/system/
+	cp $(outdir)/parts/initcfg $(outdir)/root/lib/system/
+	cp $(outdir)/parts/shell $(outdir)/root/bin/
+	cp $(outdir)/parts/ui $(outdir)/root/lib/system/
+	cp $(outdir)/parts/coreutils/* $(outdir)/root/bin/
 # Core utils
 coreutils: pwuc $(outdir)/parts
 	mkdir -p $(outdir)/parts/coreutils
@@ -18,7 +30,7 @@ usrsetup: pwuc $(outdir)/parts
 init: pwuc $(outdir)/parts
 	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
 # Boot fs files
-bootfs: $(outdir)/parts lbl kernel
+bootfs_files: $(outdir)/parts lbl kernel
 	mkdir -p $(outdir)/boot
 	cp $(outdir)/parts/lbl $(outdir)/boot/boot.smc
 	cp $(outdir)/parts/kernel $(outdir)/boot/ekrnl
