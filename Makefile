@@ -1,6 +1,10 @@
 outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
+# Core utils
+coreutils: pwuc $(outdir)/parts
+	mkdir -p $(outdir)/parts/coreutils
+	cd userspace/coreutils && ./build.sh && mv out/* $(outdir)/parts/coreutils/
 # UI
 ui: pwuc $(outdir)/parts shell
 	cd userspace/ui && pwuc main.pwsl -o $(outdir)/parts/ui
