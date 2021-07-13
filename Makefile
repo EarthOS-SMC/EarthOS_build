@@ -37,6 +37,7 @@ init: pwuc $(outdir)/parts
 	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
 # Boot fs files
 bootfs_files: $(outdir)/parts lbl kernel
+	rm -rf $(outdir)/boot
 	mkdir -p $(outdir)/boot
 	cp $(outdir)/parts/lbl $(outdir)/boot/boot.smc
 	cp $(outdir)/parts/kernel $(outdir)/boot/ekrnl
