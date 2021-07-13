@@ -1,6 +1,9 @@
 outdir = ${OUT}
 # Final target - media code
 #media: out/rootfs.img
+# UI
+ui: pwuc $(outdir)/parts
+	cd userspace/ui && pwuc main.pwsl -o $(outdir)/parts/ui
 # User setup service
 usrsetup: pwuc $(outdir)/parts
 	cd userspace/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
