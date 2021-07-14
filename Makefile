@@ -6,9 +6,14 @@ endif
 bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
 	rm -rf $(outdir)/tmp
 	cp -r build/fssc-builder $(outdir)/tmp
-	rm $(outdir)/tmp/project.conf $(outdir)/tmp/config/*
+	rm $(outdir)/tmp/project.conf
+	rm $(outdir)/tmp/config/*
 	cp config/project.conf $(outdir)/tmp/
-	cp config/attributes* $(outdir)/tmp/config
+	cp config/*attributes* $(outdir)/tmp/config/
+	rm -rf $(outdir)/tmp/content
+	mkdir -p $(outdir)/tmp/content
+	cp -r out/boot $(outdir)/tmp/content/boot
+	cp -r out/root $(outdir)/tmp/content/earthos
 	cp $(outdir)/parts/mbr  $(outdir)/tmp/
 	cd $(outdir)/tmp && ./build.sh
 	mv $(outdir)/tmp/output.fssc $(outdir)/EarthOS.fssc
