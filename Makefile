@@ -1,4 +1,7 @@
 outdir = ${OUT}
+ifeq ($(outdir),)
+$(error Please run 'source build/envsetup.sh' first)
+endif
 # Final target - media code
 bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
 	rm -rf $(outdir)/tmp
