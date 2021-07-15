@@ -45,14 +45,18 @@ coreutils: pwuc $(outdir)/parts
 	mkdir -p $(outdir)/parts/coreutils
 	cd userspace/coreutils && ./build.sh && mv out/* $(outdir)/parts/coreutils/
 # UI
-ui: pwuc $(outdir)/parts shell
+ui: pwuc installer/rootfs $(outdir)/parts shell
 	cd userspace/service/ui && pwuc main.pwsl -o $(outdir)/parts/ui
+	mkdir -p installer/rootfs/etc/init.d
+	cp userspace/service/ui/service installer/rootfs/etc/init.d/100-ui
 # Shell
 shell: pwuc $(outdir)/parts
 	cd userspace/shell && pwuc main.pwsl -o $(outdir)/parts/shell
 # User setup service
-usrsetup: pwuc $(outdir)/parts
+usrsetup: pwuc installer/rootfs $(outdir)/parts
 	cd userspace/service/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
+	mkdir -p installer/rootfs/etc/init.d
+	cp userspace/service/usrsetup/service installer/rootfs/etc/init.d/5-users
 # Init system
 init: pwuc $(outdir)/parts
 	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
