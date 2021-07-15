@@ -46,7 +46,7 @@ coreutils: pwuc $(outdir)/parts
 	cd userspace/coreutils && ./build.sh && mv out/* $(outdir)/parts/coreutils/
 # UI
 ui: pwuc $(outdir)/parts shell
-	cd userspace/ui && pwuc main.pwsl -o $(outdir)/parts/ui
+	cd userspace/service/ui && pwuc main.pwsl -o $(outdir)/parts/ui
 # Shell
 shell: pwuc $(outdir)/parts
 	cd userspace/shell && pwuc main.pwsl -o $(outdir)/parts/shell
