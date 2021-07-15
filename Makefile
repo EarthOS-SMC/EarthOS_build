@@ -52,7 +52,7 @@ shell: pwuc $(outdir)/parts
 	cd userspace/shell && pwuc main.pwsl -o $(outdir)/parts/shell
 # User setup service
 usrsetup: pwuc $(outdir)/parts
-	cd userspace/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
+	cd userspace/service/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
 # Init system
 init: pwuc $(outdir)/parts
 	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
