@@ -32,6 +32,7 @@ rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
 	mkdir -p $(outdir)/root/proc
 	mkdir -p $(outdir)/root/sys
 	cp $(outdir)/parts/init $(outdir)/root/sbin/
+	cp $(outdir)/parts/banner $(outdir)/root/sbin/
 	cp $(outdir)/parts/usrsetup $(outdir)/root/lib/system/
 	cp $(outdir)/parts/initcfg $(outdir)/root/lib/system/
 	cp $(outdir)/parts/shell $(outdir)/root/bin/
@@ -57,6 +58,11 @@ usrsetup: pwuc installer/rootfs $(outdir)/parts
 	cd userspace/service/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/usrsetup/service installer/rootfs/etc/init.d/5-users
+# Banner service
+ui: pwuc installer/rootfs $(outdir)/parts
+	cd userspace/service/banner && pwuc main.pwsl -o $(outdir)/parts/banner
+	mkdir -p installer/rootfs/etc/init.d
+	cp userspace/service/banner/service installer/rootfs/etc/init.d/0-banner
 # Init system
 init: pwuc $(outdir)/parts
 	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
