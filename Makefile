@@ -19,7 +19,7 @@ bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
 	mv $(outdir)/tmp/output.fssc $(outdir)/EarthOS.fssc
 	rm -rf $(outdir)/tmp
 # Root fs files
-rootfs_files: installer/rootfs build_info init usrsetup shell ui coreutils
+rootfs_files: installer/rootfs build_info init banner usrsetup shell ui coreutils
 	rm -rf $(outdir)/root
 	cp -r installer/rootfs $(outdir)/root
 	rm -rf $(outdir)/root/.git*
@@ -59,7 +59,7 @@ usrsetup: pwuc installer/rootfs $(outdir)/parts
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/usrsetup/service installer/rootfs/etc/init.d/5-users
 # Banner service
-ui: pwuc installer/rootfs $(outdir)/parts
+banner: pwuc installer/rootfs $(outdir)/parts
 	cd userspace/service/banner && pwuc main.pwsl -o $(outdir)/parts/banner
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/banner/service installer/rootfs/etc/init.d/0-banner
