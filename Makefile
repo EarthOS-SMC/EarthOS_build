@@ -15,7 +15,7 @@ bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
 	cp -r out/boot $(outdir)/tmp/content/boot
 	cp -r out/root $(outdir)/tmp/content/earthos
 	cp $(outdir)/parts/mbr  $(outdir)/tmp/
-	cd $(outdir)/tmp && ./build.sh
+	cd $(outdir)/tmp && ./build.sh 1
 	mv $(outdir)/tmp/output.fssc $(outdir)/EarthOS.fssc
 	rm -rf $(outdir)/tmp
 # Root fs files
