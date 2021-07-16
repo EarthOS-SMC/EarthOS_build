@@ -44,28 +44,28 @@ build_info: installer/rootfs
 # Core utils
 coreutils: pwuc $(outdir)/parts
 	mkdir -p $(outdir)/parts/coreutils
-	cd userspace/coreutils && ./build.sh && mv out/* $(outdir)/parts/coreutils/
+	cd userspace/coreutils && ./build.sh && mv out/* ../../$(outdir)/parts/coreutils/
 # UI
 ui: pwuc installer/rootfs $(outdir)/parts shell
-	cd userspace/service/ui && pwuc main.pwsl -o $(outdir)/parts/ui
+	cd userspace/service/ui && pwuc main.pwsl -o ../../../$(outdir)/parts/ui
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/ui/service installer/rootfs/etc/init.d/100-ui
 # Shell
 shell: pwuc $(outdir)/parts
-	cd userspace/shell && pwuc main.pwsl -o $(outdir)/parts/shell
+	cd userspace/shell && pwuc main.pwsl -o ../../$(outdir)/parts/shell
 # User setup service
 usrsetup: pwuc installer/rootfs $(outdir)/parts
-	cd userspace/service/usrsetup && pwuc usrsetup.pwsle -o $(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o $(outdir)/parts/initcfg
+	cd userspace/service/usrsetup && pwuc usrsetup.pwsle -o ../../../$(outdir)/parts/usrsetup && pwuc initcfg.pwsle -o ../../../$(outdir)/parts/initcfg
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/usrsetup/service installer/rootfs/etc/init.d/5-users
 # Banner service
 banner: pwuc installer/rootfs $(outdir)/parts
-	cd userspace/service/banner && pwuc main.pwsl -o $(outdir)/parts/banner
+	cd userspace/service/banner && pwuc main.pwsl -o ../../../$(outdir)/parts/banner
 	mkdir -p installer/rootfs/etc/init.d
 	cp userspace/service/banner/service installer/rootfs/etc/init.d/0-banner
 # Init system
 init: pwuc $(outdir)/parts
-	cd userspace/init && pwuc main.pwsl -o $(outdir)/parts/init
+	cd userspace/init && pwuc main.pwsl -o ../../$(outdir)/parts/init
 # Boot fs files
 bootfs_files: $(outdir)/parts lbl kernel
 	rm -rf $(outdir)/boot
@@ -74,13 +74,13 @@ bootfs_files: $(outdir)/parts lbl kernel
 	cp $(outdir)/parts/kernel $(outdir)/boot/ekrnl
 # Kernel
 kernel: pwc $(outdir)/parts kernel/main.pwsl
-	cd kernel && pwc main.pwsl -o $(outdir)/parts/kernel --include-dir .
+	cd kernel && pwc main.pwsl -o ../$(outdir)/parts/kernel --include-dir .
 # Little bootloader
 lbl: pwc $(outdir)/parts boot/lbl/main.pwsl
-	cd boot/lbl && pwc main.pwsl -o $(outdir)/parts/lbl
+	cd boot/lbl && pwc main.pwsl -o ../../$(outdir)/parts/lbl
 # MBR
 mbr: pwc $(outdir)/parts boot/mbr/main.pwsl build_tools
-	cd boot/mbr && pwc main.pwsl -o $(outdir)/parts/mbr --string
+	cd boot/mbr && pwc main.pwsl -o ../../$(outdir)/parts/mbr --string
 	makembr $(outdir)/parts/mbr
 # out/parts directory
 $(outdir)/parts:
