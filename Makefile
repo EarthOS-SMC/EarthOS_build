@@ -3,21 +3,16 @@ ifeq ($(outdir),)
 $(error Please run 'source build/envsetup.sh' first)
 endif
 # Final target - media code
-bootcode: build/fssc-builder config mbr bootfs_files rootfs_files
-	rm -rf $(outdir)/tmp
-	cp -r build/fssc-builder $(outdir)/tmp
-	rm $(outdir)/tmp/project.conf
-	rm $(outdir)/tmp/config/*
-	cp config/project.conf $(outdir)/tmp/
-	cp config/*attributes* $(outdir)/tmp/config/
-	rm -rf $(outdir)/tmp/content
-	mkdir -p $(outdir)/tmp/content
-	cp -r out/boot $(outdir)/tmp/content/boot
-	cp -r out/root $(outdir)/tmp/content/earthos
-	cp $(outdir)/parts/mbr  $(outdir)/tmp/
-	cd $(outdir)/tmp && ./build.sh 1
-	mv $(outdir)/tmp/output.fssc $(outdir)/EarthOS.fssc
-	rm -rf $(outdir)/tmp
+bootcode: mbr bootfs rootfs
+	mkfpt out/EarthOS.fssc --config config/disk.conf
+	@echo
+	@echo Build finished successfully, see the out/EarthOS.fssc file.
+# Root fs
+rootfs: build_tools config rootfs_files
+	mkfs.fssc2 --root $(outdir)/root --attributes config/attributes.list $(outdir)/root.img
+# Boot fs
+bootfs: build_tools config bootfs_files
+	mkfs.fssc2 --root $(outdir)/boot --attributes config/boot-attributes.list $(outdir)/boot.img
 # Root fs files
 rootfs_files: installer/rootfs build_info init banner usrsetup shell ui coreutils
 	rm -rf $(outdir)/root
@@ -80,14 +75,16 @@ lbl: pwc $(outdir)/parts boot/lbl/main.pwsl
 	cd boot/lbl && pwc main.pwsl -o ../../$(outdir)/parts/lbl
 # MBR
 mbr: pwc $(outdir)/parts boot/mbr/main.pwsl build_tools
-	cd boot/mbr && pwc main.pwsl -o ../../$(outdir)/parts/mbr --string
-	makembr $(outdir)/parts/mbr
+	cd boot/mbr && pwc main.pwsl -o ../../$(outdir)/mbr.img --string
+	makembr $(outdir)/mbr.img
 # out/parts directory
 $(outdir)/parts:
 	mkdir -p $(outdir)/parts
 # Build tools
-build_tools: build/tools/makembr.c
+build_tools: build/tools/makembr.c build/tools/fssc/mkfs.fssc2.c build/tools/fssc/mkfpt.c
 	gcc build/tools/makembr.c -o build/bin/makembr
+	gcc build/tools/fssc/mkfs.fssc2.c -o build/bin/mkfs.fssc2
+	gcc build/tools/fssc/mkfpt.c -o build/bin/mkfpt
 # PowerSlash userspace compiler
 pwuc: build/pwuc/pwc.c
 	mkdir -p build/bin
